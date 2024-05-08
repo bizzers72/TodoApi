@@ -17,10 +17,11 @@ namespace TodoApi.Controllers
 
         // GET: api/<TasksController>
         [HttpGet]
-        public async Task<List<TaskItem>> GetTaskItems()
+        public async Task<List<TaskItem>> GetTasks()
         {
             return await _tasksService.GetAsync();
         }
+
 
 
     }

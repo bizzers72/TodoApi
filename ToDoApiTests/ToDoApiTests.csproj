@@ -25,4 +25,8 @@
     <InternalsVisibleTo Include="TodoApi" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TodoApi\TodoApi.csproj" />
+  </ItemGroup>
+
 </Project>
