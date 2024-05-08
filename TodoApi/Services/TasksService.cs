@@ -17,6 +17,9 @@ public class TasksService
         _tasksCollection = mongoDatabase.GetCollection<TaskItem>(taskStoreDatabaseSettings.Value.TasksCollectionName);
     }
 
+    public async Task<List<TaskItem>> GetAsync() =>
+        await _tasksCollection.Find(_ => true).ToListAsync();
+           
 }
 
 
