@@ -42,6 +42,7 @@ namespace ToDoApiTests
         [Fact]
         public async Task GetTaskItemNotFound()
         {
+            //  Expected HTTP code
             var expectedStatusCode = System.Net.HttpStatusCode.NotFound;
 
             //  call API to get Tasks/To Do list - the id is not present in local MongoDB
@@ -54,6 +55,7 @@ namespace ToDoApiTests
         [Fact]
         public async Task GetTaskItem()
         {
+            //  Expected HTTP code
             var expectedStatusCode = System.Net.HttpStatusCode.OK;
 
             //  call API to get Tasks/To Do list - the id is present in localMongoDB
@@ -66,19 +68,24 @@ namespace ToDoApiTests
         [Fact]
         public async Task PostNewTaskItem()
         {
+            //  Expected HTTP code
             var expectedStatusCode = System.Net.HttpStatusCode.Created;
 
+            //  Create JSON string object
             string jsonObject = """
                 {
                     "name": "Entering a new task",
                     "isCompleted": false
                 }
             """;
-
+            
+            //  Create HTTP content for it to be passed through to the response
             HttpContent httpContent = new StringContent(jsonObject, Encoding.UTF8, "application/json");
 
+            //  Call API to add a new task
             HttpResponseMessage response = await _httpClient.PostAsync("/api/Tasks", httpContent);
 
+            //  Asset that the call was OK
             Assert.Equal(expectedStatusCode, response.StatusCode);
 
         }
@@ -86,8 +93,10 @@ namespace ToDoApiTests
         [Fact]
         public async Task PutUpdateTaskItem()
         {
+            //  Expected HTTP code
             var expectedStatusCode = System.Net.HttpStatusCode.NoContent;
 
+            //  Create JSON string object
             string jsonObject = """
                 {
                     "name": "Updating an existing task",
@@ -95,12 +104,28 @@ namespace ToDoApiTests
                 }
             """;
 
+            //  Create HTTP content for it to be passed through to the response
             HttpContent httpContent = new StringContent(jsonObject, Encoding.UTF8, "application/json");
 
+            //  Call API to update an existing task based on Id
             HttpResponseMessage response = await _httpClient.PutAsync("/api/Tasks/663b3d6deabac897836596be", httpContent);
 
+            //  Asset that the call was OK
             Assert.Equal(expectedStatusCode, response.StatusCode);
 
+        }
+
+        [Fact]
+        public async Task DeleteTaskItem()
+        {
+            //  Expected HTTP code
+            var expectedStatusCode = System.Net.HttpStatusCode.NoContent;
+
+            //  Call API to remove an existing task based on Id
+            HttpResponseMessage response = await _httpClient.DeleteAsync("/api/Tasks/663bb03fab77d84c6e46c54e");
+
+            //  Assert that the call was OK
+            Assert.Equal(expectedStatusCode, response.StatusCode);
         }
 
     }

@@ -60,5 +60,19 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{id:length(24)}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var taskItem = await _tasksService.GetAsync(id);
+
+            if (taskItem is null)
+            {
+                return NotFound();
+            }
+
+            await _tasksService.RemoveAsync(id);
+
+            return NoContent();
+        }
     }
 }

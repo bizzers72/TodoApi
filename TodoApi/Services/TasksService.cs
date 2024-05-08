@@ -29,6 +29,10 @@ public class TasksService
 
     public async Task UpdateAsync(string id, TaskItem updatedTaskItem) =>
         await _tasksCollection.ReplaceOneAsync(x => x.Id == id, updatedTaskItem);
+
+    public async Task RemoveAsync(string id) =>
+        await _tasksCollection.DeleteOneAsync(x => x.Id == id);
+
 }
 
 
