@@ -35,5 +35,30 @@ namespace TodoApi.Controllers
             return task;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Post(TaskItem newTaskItem)
+        {
+            await _tasksService.CreateAsync(newTaskItem);
+
+            return CreatedAtAction(nameof(Get), new { id = newTaskItem.Id }, newTaskItem);
+        }
+
+        [HttpPut("{id:length(24)}")]
+        public async Task<IActionResult> Put(string id, TaskItem updatedTaskItem)
+        {
+            var taskItem = await _tasksService.GetAsync(id);
+
+            if (taskItem is null)
+            {
+                return NotFound();
+            }
+
+            updatedTaskItem.Id = taskItem.Id;
+
+            await _tasksService.UpdateAsync(id, updatedTaskItem);
+
+            return NoContent();
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using TodoApi.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TodoApi.Services;
 
@@ -23,7 +24,11 @@ public class TasksService
     public async Task<TaskItem?> GetAsync(string id) =>
         await _tasksCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-           
+    public async Task CreateAsync(TaskItem newTaskItem) =>
+        await _tasksCollection.InsertOneAsync(newTaskItem);
+
+    public async Task UpdateAsync(string id, TaskItem updatedTaskItem) =>
+        await _tasksCollection.ReplaceOneAsync(x => x.Id == id, updatedTaskItem);
 }
 
 

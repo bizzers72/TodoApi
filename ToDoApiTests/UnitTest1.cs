@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using Xunit.Abstractions;
+using System.Text;
 using TodoApi.Models;
 
 namespace ToDoApiTests
@@ -62,6 +63,45 @@ namespace ToDoApiTests
             Assert.Equal(expectedStatusCode, response.StatusCode);
         }
 
+        [Fact]
+        public async Task PostNewTaskItem()
+        {
+            var expectedStatusCode = System.Net.HttpStatusCode.Created;
+
+            string jsonObject = """
+                {
+                    "name": "Entering a new task",
+                    "isCompleted": false
+                }
+            """;
+
+            HttpContent httpContent = new StringContent(jsonObject, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _httpClient.PostAsync("/api/Tasks", httpContent);
+
+            Assert.Equal(expectedStatusCode, response.StatusCode);
+
+        }
+
+        [Fact]
+        public async Task PutUpdateTaskItem()
+        {
+            var expectedStatusCode = System.Net.HttpStatusCode.NoContent;
+
+            string jsonObject = """
+                {
+                    "name": "Updating an existing task",
+                    "isCompleted": true
+                }
+            """;
+
+            HttpContent httpContent = new StringContent(jsonObject, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _httpClient.PutAsync("/api/Tasks/663b3d6deabac897836596be", httpContent);
+
+            Assert.Equal(expectedStatusCode, response.StatusCode);
+
+        }
 
     }
 }
