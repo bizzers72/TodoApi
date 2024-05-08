@@ -19,6 +19,10 @@ public class TasksService
 
     public async Task<List<TaskItem>> GetAsync() =>
         await _tasksCollection.Find(_ => true).ToListAsync();
+
+    public async Task<TaskItem?> GetAsync(string id) =>
+        await _tasksCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+
            
 }
 

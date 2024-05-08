@@ -37,5 +37,31 @@ namespace ToDoApiTests
             Assert.NotNull(deserialisedTaskJson);
             
         }
+
+        [Fact]
+        public async Task GetTaskItemNotFound()
+        {
+            var expectedStatusCode = System.Net.HttpStatusCode.NotFound;
+
+            //  call API to get Tasks/To Do list - the id is not present in local MongoDB
+            HttpResponseMessage response = await _httpClient.GetAsync("/api/Tasks/123456789012345678901234");
+
+            //  Assert that the call was OK
+            Assert.Equal(expectedStatusCode, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetTaskItem()
+        {
+            var expectedStatusCode = System.Net.HttpStatusCode.OK;
+
+            //  call API to get Tasks/To Do list - the id is present in localMongoDB
+            HttpResponseMessage response = await _httpClient.GetAsync("/api/Tasks/663b3e76eabac897836596bf");
+
+            //  Assert that the call was OK
+            Assert.Equal(expectedStatusCode, response.StatusCode);
+        }
+
+
     }
 }
