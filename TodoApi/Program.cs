@@ -1,4 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using TodoApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<TaskStoreDatabaseSettings>(builder.Configuration.GetSection("TaskStoreDatabase"));
 
 // Add services to the container.
 
