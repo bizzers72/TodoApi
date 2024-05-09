@@ -1,8 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using TodoApi.Models;
 using TodoApi.Services;
 
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddJsonFile($"appsettings.json", true, true);
+builder.Configuration.AddJsonFile($"appsettings.{environment}.json", true, true);
 
 builder.Services.Configure<TaskStoreDatabaseSettings>(builder.Configuration.GetSection("TaskStoreDatabase"));
 builder.Services.AddSingleton<TasksService>();
