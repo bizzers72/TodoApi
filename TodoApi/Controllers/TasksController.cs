@@ -8,24 +8,24 @@ namespace TodoApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TasksController : ControllerBase
+    public class TasksController(ITasksService tasksService) : ControllerBase
     {
-        private readonly TasksService _tasksService;
+        //private readonly TasksService _tasksService;
 
-        public TasksController(TasksService tasksService) =>
-            _tasksService = tasksService;
+        //public TasksController(TasksService tasksService) =>
+        //    _tasksService = tasksService;
 
         // GET: api/<TasksController>
         [HttpGet]
         public async Task<List<TaskItem>> Get()
         {
-            return await _tasksService.GetAsync();
+            return await tasksService.GetAsync();
         }
 
         [HttpGet("{id:length(24)}")]
         public async Task<ActionResult<TaskItem>> Get(string id)
         {
-            var task = await _tasksService.GetAsync(id);
+            var task = await tasksService.GetAsync(id);
 
             if (task is null)
             {
@@ -38,7 +38,7 @@ namespace TodoApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(TaskItem newTaskItem)
         {
-            await _tasksService.CreateAsync(newTaskItem);
+            await tasksService.CreateAsync(newTaskItem);
 
             return CreatedAtAction(nameof(Get), new { id = newTaskItem.Id }, newTaskItem);
         }
@@ -46,7 +46,7 @@ namespace TodoApi.Controllers
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Put(string id, TaskItem updatedTaskItem)
         {
-            var taskItem = await _tasksService.GetAsync(id);
+            var taskItem = await tasksService.GetAsync(id);
 
             if (taskItem is null)
             {
@@ -55,7 +55,7 @@ namespace TodoApi.Controllers
 
             updatedTaskItem.Id = taskItem.Id;
 
-            await _tasksService.UpdateAsync(id, updatedTaskItem);
+            await tasksService.UpdateAsync(id, updatedTaskItem);
 
             return NoContent();
         }
@@ -63,14 +63,14 @@ namespace TodoApi.Controllers
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> Delete(string id)
         {
-            var taskItem = await _tasksService.GetAsync(id);
+            var taskItem = await tasksService.GetAsync(id);
 
             if (taskItem is null)
             {
                 return NotFound();
             }
 
-            await _tasksService.RemoveAsync(id);
+            await tasksService.RemoveAsync(id);
 
             return NoContent();
         }

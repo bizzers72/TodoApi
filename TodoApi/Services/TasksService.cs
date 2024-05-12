@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TodoApi.Services;
 
-public class TasksService
+public class TasksService : ITasksService
 {
     private readonly IMongoCollection<TaskItem> _tasksCollection;
 
@@ -21,7 +21,7 @@ public class TasksService
     public async Task<List<TaskItem>> GetAsync() =>
         await _tasksCollection.Find(_ => true).ToListAsync();
 
-    public async Task<TaskItem?> GetAsync(string id) =>
+    public async Task<TaskItem> GetAsync(string id) =>
         await _tasksCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
     public async Task CreateAsync(TaskItem newTaskItem) =>
